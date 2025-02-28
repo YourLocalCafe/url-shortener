@@ -12,3 +12,9 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Urls {
+  id Int @id @default(autoincrement())
+  originalUrl String
+  shortUrl String
+}
