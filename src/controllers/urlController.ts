@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
+import { nanoid } from "nanoid";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,13 @@ export const shortenUrl = async (req: Request, res: Response, next: NextFunction
             return;
         }
 
-        const shortUrl = "test";
+        let shortUrl: string = nanoid(10);
+        let exists: Boolean = false;
+        do {
+            exists = await prisma.urls.findUnique({
+                where: {shortUrl} 
+            }) !== null;
+        } while(exists);
         const newUrl = await prisma.urls.create({
             data: { originalUrl, shortUrl },
         });
