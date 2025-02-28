@@ -1,0 +1,36 @@
+{
+  "name": "url-shortner",
+  "version": "1.0.0",
+  "description": "A simple web-app allowing users to obtain shorter URLs for their desired websites.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node --watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prisma:migrate": "npx prisma migrate dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YourLocalCafe/url-shortner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/YourLocalCafe/url-shortner/issues"
+  },
+  "homepage": "https://github.com/YourLocalCafe/url-shortner#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.5",
+    "prisma": "^6.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
