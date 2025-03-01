@@ -3,7 +3,7 @@ const output = document.querySelector("#output");
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const originalUrl = form.originalUrl.value.trim();
-  
+
   try {
     const response = await fetch("/api/url/shorten", {
       method: "POST",
@@ -14,7 +14,7 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || "Something went wrong");
+      throw new Error(data.message || "Something went wrong");
     }
     
     output.innerHTML = `Shortened URL: <a href="${data.shortUrl}" target="_blank" rel="noopener norefferrer">${data.shortUrl}</a>`;
