@@ -1,10 +1,11 @@
 import express, { NextFunction, Request, Response, urlencoded } from "express";
 import urlRoutes from "./routes/urlRoutes";
 import cors from "cors";
-import notFound from "./middleware/notFound";
-import errorHandler from "./middleware/error";
+import notFound from "./handlers/notFound";
+import errorHandler from "./handlers/error";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
+import logger from "./middleware/logger";
 
 class CustomError extends Error {
   status?: number;
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "../public")));
+app.use(logger);
 app.use("/api/url", urlRoutes);
 
 app.get(
