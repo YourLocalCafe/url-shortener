@@ -17,10 +17,10 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
+app.use(logger);
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "../public")));
-app.use(logger);
 app.use("/api/url", urlRoutes);
 
 app.get(
