@@ -21,8 +21,8 @@ model Urls {
 
 model User {
   id            Int            @id @default(autoincrement())
+  userName      String        @unique
   email         String         @unique
-  userName      String?        @unique
   passwordHash  String
   isVerified    Boolean        @default(false)
   refreshTokens RefreshToken[]
