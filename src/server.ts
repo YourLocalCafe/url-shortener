@@ -8,6 +8,7 @@ import { PrismaClient } from "@prisma/client";
 import logger from "./middleware/logger";
 import register from "./routes/register";
 import auth from "./routes/auth";
+import cookieParser from "cookie-parser";
 
 class CustomError extends Error {
   status?: number;
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(logger);
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/register", register);
 app.use("/auth", auth);
