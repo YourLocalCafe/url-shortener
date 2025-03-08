@@ -7,7 +7,7 @@ import path from "path";
 import { PrismaClient } from "@prisma/client";
 import logger from "./middleware/logger";
 import register from "./routes/register";
-import auth from "./routes/auth";
+import login from "./routes/login";
 import cookieParser from "cookie-parser";
 import verifyJWT from "./middleware/verifyJWT";
 
@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.use("/register", register);
-app.use("/auth", auth);
+app.use("/login", login);
 
 app.use(verifyJWT);
 app.use("/api/url", urlRoutes);
