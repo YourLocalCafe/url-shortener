@@ -6,6 +6,7 @@ import errorHandler from "./handlers/error";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
 import logger from "./middleware/logger";
+import register from "./routes/register";
 
 class CustomError extends Error {
   status?: number;
@@ -21,6 +22,7 @@ app.use(logger);
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "../public")));
+app.use("/register", register);
 app.use("/api/url", urlRoutes);
 
 app.get(
