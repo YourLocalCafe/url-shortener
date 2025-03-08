@@ -9,6 +9,7 @@ import logger from "./middleware/logger";
 import register from "./routes/register";
 import auth from "./routes/auth";
 import cookieParser from "cookie-parser";
+import verifyJWT from "./middleware/verifyJWT";
 
 class CustomError extends Error {
   status?: number;
@@ -20,15 +21,20 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
+
 app.use(logger);
+
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, "../public")));
+
 app.use("/register", register);
 app.use("/auth", auth);
-app.use("/api/url", urlRoutes);
 
+app.use(verifyJWT);
+app.use("/api/url", urlRoutes);
 app.get(
   "/:shortUrl",
   async (req: Request, res: Response, next: NextFunction) => {
