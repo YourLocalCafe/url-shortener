@@ -44,21 +44,21 @@ export const handleLogin = async (
     }
 
     const accessToken = jwt.sign(
-      { userName: foundUser.userName },
+      { userName: foundUser.userName, email: foundUser.email },
       process.env.ACCESS_TOKEN_SECRET!,
       { expiresIn: "15m" }
     );
     const refreshToken = jwt.sign(
-      { userName: foundUser.userName },
+      { userName: foundUser.userName, email: foundUser.email },
       process.env.REFRESH_TOKEN_SECRET!,
       { expiresIn: "1d" }
     );
-    const refreshTokens = await prisma.refreshToken.create({
-      data: {
+    await prisma.refreshToken.upsert({
+      where: { userId: foundUser.id },
+      update: { token: refreshToken },
+      create: {
         token: refreshToken,
-        user: {
-          connect: { id: foundUser.id },
-        },
+        user: { connect: { id: foundUser.id } },
       },
     });
     res.cookie("jwt", refreshToken, {

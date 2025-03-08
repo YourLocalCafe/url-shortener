@@ -32,5 +32,5 @@ model RefreshToken {
   id     Int    @id @default(autoincrement())
   token  String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  userId Int    @unique
 }

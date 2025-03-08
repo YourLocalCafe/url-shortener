@@ -39,7 +39,7 @@ export const handleRegister = async (
       return;
     }
     const hashedPwd = await bcrypt.hash(pwd, 10);
-    const newUser = await prisma.user.create({
+    await prisma.user.create({
       data: { userName, email, passwordHash: hashedPwd },
     });
     res.status(201).json({ message: "Successfully registered user." });
