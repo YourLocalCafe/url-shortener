@@ -18,3 +18,19 @@ model Urls {
   originalUrl String
   shortUrl    String @unique
 }
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  userName      String?        @unique
+  passwordHash  String
+  isVerified    Boolean        @default(false)
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id     Int    @id @default(autoincrement())
+  token  String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
