@@ -16,6 +16,7 @@ export const handleRegister = async (
   const { userName, email, pwd } = req.body;
   if (!userName || !email || !pwd) {
     const error = new CustomError("Username, Email and Password are required.");
+    error.status = 400;
     next(error);
     return;
   }
@@ -33,6 +34,7 @@ export const handleRegister = async (
       } else {
         error = new CustomError("Username and Email are already registered.");
       }
+      error.status = 409;
       next(error);
       return;
     }
