@@ -35,8 +35,7 @@ export const handleLogin = async (
       error.status = 401;
       throw error;
     }
-    const match: Boolean =
-      (await bcrypt.hash(pwd, 10)) === foundUser.passwordHash;
+    const match: Boolean = await bcrypt.compare(pwd, foundUser.passwordHash);
     if (!match) {
       const error = new CustomError("Invalid password.");
       error.status = 401;
