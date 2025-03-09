@@ -37,8 +37,6 @@ app.use("/login", login);
 app.use("/api/refresh", refresh);
 app.use("/api/logout", logout);
 
-app.use(verifyJWT);
-app.use("/api/url", urlRoutes);
 app.get(
   "/:shortUrl",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -59,6 +57,8 @@ app.get(
     }
   }
 );
+
+app.use("/api/url", verifyJWT, urlRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
