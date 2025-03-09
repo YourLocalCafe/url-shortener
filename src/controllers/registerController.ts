@@ -17,8 +17,7 @@ export const handleRegister = async (
   if (!userName || !email || !pwd) {
     const error = new CustomError("Username, Email and Password are required.");
     error.status = 400;
-    next(error);
-    return;
+    throw error;
   }
 
   try {
@@ -35,8 +34,7 @@ export const handleRegister = async (
         error = new CustomError("Username and Email are already registered.");
       }
       error.status = 409;
-      next(error);
-      return;
+      throw error;
     }
     const hashedPwd = await bcrypt.hash(pwd, 10);
     await prisma.user.create({
@@ -44,9 +42,14 @@ export const handleRegister = async (
     });
     res.status(201).json({ message: "Successfully registered user." });
   } catch (error) {
-    const msg =
-      error instanceof Error ? error.message : "An unknown error occurred";
-    const customError = new CustomError(msg);
+    let customError: CustomError;
+    if (!(error instanceof CustomError)) {
+      const msg =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+      customError = new CustomError(msg);
+    } else {
+      customError = error;
+    }
     next(customError);
     return;
   }
