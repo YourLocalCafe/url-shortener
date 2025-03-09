@@ -17,7 +17,7 @@ export const handleLogin = async (
   next: NextFunction
 ) => {
   const { userName, email, pwd } = req.body;
-  if ((!userName && !email) || !pwd) {
+  if (!(userName || email) || !pwd) {
     const error = new CustomError("Username/Email and password are required.");
     error.status = 400;
     next(error);
