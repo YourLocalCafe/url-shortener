@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 class CustomError extends Error {
   status?: number;
@@ -37,10 +38,36 @@ export const handleRegister = async (
       throw error;
     }
     const hashedPwd = await bcrypt.hash(pwd, 10);
-    await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: { userName, email, passwordHash: hashedPwd },
     });
-    res.status(201).json({ message: "Successfully registered user." });
+    const accessToken = jwt.sign(
+      { userName: newUser.userName, email: newUser.email },
+      process.env.ACCESS_TOKEN_SECRET!,
+      { expiresIn: "15m" }
+    );
+    const refreshToken = jwt.sign(
+      { userName: newUser.userName, email: newUser.email },
+      process.env.REFRESH_TOKEN_SECRET!,
+      { expiresIn: "1d" }
+    );
+    await prisma.refreshToken.upsert({
+      where: { userId: newUser.id },
+      update: { token: refreshToken },
+      create: {
+        token: refreshToken,
+        user: { connect: { id: newUser.id } },
+      },
+    });
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res
+      .status(201)
+      .json({ message: "Successfully registered user.", accessToken });
   } catch (error) {
     let customError: CustomError;
     if (!(error instanceof CustomError)) {
