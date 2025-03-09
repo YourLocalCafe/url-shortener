@@ -16,7 +16,7 @@ export const handleLogout = async (
   if (!cookies?.jwt) res.sendStatus(204);
   const refreshToken = cookies.jwt;
   try {
-    const deletedToken = await prisma.refreshToken.deleteMany({
+    await prisma.refreshToken.deleteMany({
       where: { token: refreshToken },
     });
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
