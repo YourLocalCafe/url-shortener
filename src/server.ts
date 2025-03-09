@@ -10,6 +10,7 @@ import register from "./routes/register";
 import login from "./routes/login";
 import cookieParser from "cookie-parser";
 import verifyJWT from "./middleware/verifyJWT";
+import refresh from "./routes/refresh";
 
 class CustomError extends Error {
   status?: number;
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 app.use("/register", register);
 app.use("/login", login);
+app.use("/api/refresh", refresh);
 
 app.use(verifyJWT);
 app.use("/api/url", urlRoutes);

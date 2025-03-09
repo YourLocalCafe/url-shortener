@@ -15,7 +15,7 @@ interface decodedToken {
 
 const prisma = new PrismaClient();
 
-const handleRefresh = async (
+export const handleRefresh = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -84,5 +84,3 @@ const handleRefresh = async (
     return;
   }
 };
-
-export default handleRefresh;
